@@ -20,19 +20,28 @@ class EulerMethod(ISolver):
         return current_step + dt * self._derivative(current_step, t)
 
     def _backward(self, current_step: np.ndarray, t: float, dt: float) -> np.ndarray:
-        return current_step + dt * self._derivative(current_step, t)
+        dv = self._derivative(current_step, t)
+        print(dv)
+        return current_step + dt * dv
 
     def solve(self, domain: Domain) -> np.ndarray:
         self._domain = domain
 
-        C = np.zeros((self._domain.space_steps() - 2, self._domain.time_steps()))
-        result = np.zeros((domain.space_steps(), domain.time_steps()))
+        border = 5
+
+        C = np.zeros((self._domain.space_steps(), self._domain.time_steps()))
+        C[:, 0] = np.ones((self._domain.space_steps()))
+        C[0, 0] = border
+        C[-1, 0] = border
 
         step = 0
 
         time = self._domain.get_time()
 
         for t in time[:-1]:
+            C[0, step] = border
+            C[-1, step] = border
+
             if self.__mode:
                 C[:, step + 1] = self._forward(current_step=C[:, step], t=t, dt=domain.dt())
             else:
@@ -41,9 +50,9 @@ class EulerMethod(ISolver):
 
             step += 1
 
-        # Applying boundary conditions
-        result[1:-1] = C
+        C[0, -1] = border
+        C[-1, -1] = border
 
         self._domain = None
 
-        return result * domain.dt()
+        return C

@@ -1,4 +1,5 @@
 from matplotlib import pyplot
+from seaborn import heatmap
 from celluloid import Camera
 
 import numpy as np
@@ -30,3 +31,10 @@ def generate_graphs(partition: np.ndarray, U: np.ndarray, E: np.ndarray, n: int,
     # ax.grid()
     fig.savefig("./plots/numeric-exact-difference.png")
     pyplot.show()
+
+
+def generate_heatmap(solution: np.ndarray, name: str) -> None:
+    heatmap(solution)
+    pyplot.savefig("./plots/" + name + ".png")
+    pyplot.plot()
+    pyplot.clf()

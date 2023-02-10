@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from diff import Domain
+from diff import DiffSystem
 
 import numpy as np
 
@@ -8,5 +8,5 @@ import numpy as np
 class ISolver(ABC):
 
     @abstractmethod
-    def solve(self, domain: Domain) -> np.ndarray:
+    def solve(self, domain: DiffSystem) -> np.ndarray:
         pass

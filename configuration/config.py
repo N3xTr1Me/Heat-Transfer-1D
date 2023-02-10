@@ -12,7 +12,7 @@ space_conditions = {
 # time mesh conditions
 time_conditions = {
     "interval": (0, 1),    # time partition interval borders
-    "steps": 10,          # number of elements in partition
+    "steps": 1000,          # number of elements in partition
     "step-size": None       # size of element on the mesh
 }
 

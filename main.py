@@ -1,29 +1,31 @@
 import numpy as np
 
 from diff import *
-from graphics import generate_graphs, generate_gif, generate_heatmap
+from graphics import Graphics
 from solvers import EulerMethod, AnalyticalSolution
 from configuration import space_conditions, time_conditions, system_conditions
 
 
 def main():
 
-    domain = DiffSystem(system_conditions, space_conditions, time_conditions)
+    equation_system = DiffSystem(system_conditions, space_conditions, time_conditions)
+    graphs = Graphics()
 
     numeric = EulerMethod()
     exact = AnalyticalSolution()
 
-    U = numeric.solve(domain)
+    U = numeric.solve(equation_system)
 
-    E = exact.solve(domain)
+    E = exact.solve(equation_system)
 
-    print("L2-norm difference between numeric and analytical solutions: ", np.linalg.norm(E - U) / E.size)
+    print("L2-norm mean difference between numeric and analytical solutions: ", np.linalg.norm(E - U) / E.size)
 
-    generate_heatmap(U[1: -1], "numeric")
-    generate_heatmap(E, "analytical")
+    graphs.make_heatmap(U[1: -1], "numeric")
+    graphs.make_heatmap(E[1: -1], "analytical")
 
-    generate_graphs(domain.get_space(), U, E, space_conditions["steps"], time_conditions["steps"])
-    generate_gif(U, space_conditions["steps"], time_conditions["steps"])
+    graphs.make_graphs(equation_system.get_space(), U, E, space_conditions["steps"], time_conditions["steps"])
+    graphs.make_diff(equation_system.get_space(), U, E, space_conditions["steps"], time_conditions["steps"])
+    graphs.make_gif(U, space_conditions["steps"], time_conditions["steps"])
 
 
 if __name__ == '__main__':

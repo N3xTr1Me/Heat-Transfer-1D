@@ -2,6 +2,9 @@ from math import pi, exp, sin
 import numpy as np
 
 
+# path to the directory, where the graphic plots will be saved
+storage_path = "./plots/"
+
 # space mesh conditions
 space_conditions = {
     "interval": (0, 1),    # space partition interval borders
@@ -52,4 +55,3 @@ def u(x: float, t: float, count = 1000) -> float:
                   * sin(i * pi * x / right_border) * exp(-t * (i * pi / right_border) ** 2)
 
     return result
-
